@@ -2,18 +2,22 @@ import requests
 import time
 from datetime import datetime
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # ============================================
-# CONFIGURATION - येथे तुमची details भरा
+# CONFIGURATION - .env file वरून load होतो
 # ============================================
 
 # Telegram Bot Configuration
-TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"  # @BotFather पासून मिळवा
-TELEGRAM_CHAT_ID = "YOUR_CHAT_ID"  # तुमचा Chat ID
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 
 # DhanHQ API Configuration
-DHAN_CLIENT_ID = "YOUR_DHAN_CLIENT_ID"
-DHAN_ACCESS_TOKEN = "YOUR_DHAN_ACCESS_TOKEN"
+DHAN_CLIENT_ID = os.getenv("DHAN_CLIENT_ID")
+DHAN_ACCESS_TOKEN = os.getenv("DHAN_ACCESS_TOKEN")
 
 # ============================================
 # STOCK SYMBOLS (DhanHQ Security IDs)
@@ -160,12 +164,13 @@ def monitor_stocks():
 # ============================================
 
 if __name__ == "__main__":
-    # Check if credentials are set
-    if TELEGRAM_BOT_TOKEN == "YOUR_TELEGRAM_BOT_TOKEN":
-        print("❌ Please set your TELEGRAM_BOT_TOKEN in the code!")
-    elif TELEGRAM_CHAT_ID == "YOUR_CHAT_ID":
-        print("❌ Please set your TELEGRAM_CHAT_ID in the code!")
-    elif DHAN_ACCESS_TOKEN == "YOUR_DHAN_ACCESS_TOKEN":
-        print("❌ Please set your DHAN_ACCESS_TOKEN in the code!")
+    # Check if credentials are loaded
+    if not TELEGRAM_BOT_TOKEN:
+        print("❌ TELEGRAM_BOT_TOKEN not found in .env file!")
+    elif not TELEGRAM_CHAT_ID:
+        print("❌ TELEGRAM_CHAT_ID not found in .env file!")
+    elif not DHAN_ACCESS_TOKEN:
+        print("❌ DHAN_ACCESS_TOKEN not found in .env file!")
     else:
+        print("✅ All credentials loaded successfully!")
         monitor_stocks()
